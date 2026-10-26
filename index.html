@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Tipoff Fantasy</title>
+
+  <!-- Favicons -->
+  <link rel="icon" href="favicon.ico" sizes="any" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#060f1c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Tipoff Fantasy" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Bebas+Neue&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="src/styles.css" />
+  <link rel="stylesheet" href="src/season/season.css" />
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════
+     LANDING SCREEN (unauthenticated entry point)
+════════════════════════════════════════════ -->
+  <div id="landingScreen" class="screen" style="display:none;">
+    <div class="landing-hero">
+      <img src="logo-wordmark.png" class="landing-logo" width="320" height="104" alt="Tipoff Fantasy" />
+      <h1 class="landing-title" style="display:none;">TIPOFF FANTASY</h1>
+      <p class="landing-tag">Draft. Compete. Win.</p>
+      <div class="landing-actions">
+        <button id="landingCreateBtn" class="btn-primary btn-lg">Create Account</button>
+        <button id="landingSignInBtn" class="btn-ghost btn-lg">Sign In</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     LOGIN SCREEN
+════════════════════════════════════════════ -->
+  <div id="loginScreen" class="screen" style="display:none;">
+    <img src="logo-icon.png" class="auth-bg-logo" alt="" aria-hidden="true" />
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="logo-icon.png" class="logo-mark" width="110" height="110" alt="Tipoff Fantasy logo" />
+      </div>
+      <h2 class="auth-title">Sign in Here</h2>
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-field">
+            <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-target="loginPassword">
+              <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-icon eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="auth-forgot-row">
+          <a id="forgotPwLink" href="#" class="auth-forgot-link">Forgot password?</a>
+        </div>
+        <div id="loginError" class="auth-error" style="display:none;"></div>
+        <button id="loginSubmitBtn" class="btn-primary btn-full">Sign In</button>
+      </div>
+      <p class="auth-switch">Don't have an account? <a id="showSignupLink" href="#">Sign up</a></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     SIGNUP SCREEN
+════════════════════════════════════════════ -->
+  <div id="signupScreen" class="screen" style="display:none;">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <img src="logo-icon.png" class="logo-mark" width="90" height="90" alt="Tipoff Fantasy logo" />
+      </div>
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-sub">Join the competition.</p>
+      <div class="auth-form">
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" id="signupUsername" placeholder="Your name" autocomplete="nickname" />
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="password-field">
+            <input type="password" id="signupPassword" placeholder="6+ characters" autocomplete="new-password" />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-target="signupPassword">
+              <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-icon eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="password-field">
+            <input type="password" id="signupConfirm" placeholder="Repeat password" autocomplete="new-password" />
+            <button type="button" class="pw-toggle" aria-label="Show password" data-target="signupConfirm">
+              <svg class="eye-icon eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg class="eye-icon eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+            </button>
+          </div>
+        </div>
+        <!-- Neutral age screen. A date field rather than an "I am 13+"
+             checkbox: a checkbox telegraphs the answer that gets you in,
+             which is exactly what a neutral age screen must not do. -->
+        <div class="form-group fg-wide">
+          <label for="signupDob">Date of Birth</label>
+          <input type="date" id="signupDob" autocomplete="bday" />
+          <span class="field-hint">Used once to confirm your age. We store your age bracket, nothing else.</span>
+        </div>
+
+        <div id="signupError" class="auth-error" style="display:none;"></div>
+        <div class="tos-check-row">
+          <input type="checkbox" id="tosCheckbox" class="tos-checkbox-real" />
+          <label for="tosCheckbox" class="tos-checkbox-label">
+            <span class="tos-checkbox-box" aria-hidden="true">
+              <svg class="tos-check-svg" viewBox="0 0 12 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            I have read and agree to the <a href="#" id="openTosBtn" class="tos-link">Terms of Service</a>
+            and <a href="https://tipofffantasy.com/privacy.html" target="_blank" rel="noopener noreferrer" class="tos-link">Privacy Policy</a>
+          </label>
+        </div>
+        <button id="signupSubmitBtn" class="btn-primary btn-full" disabled>Create Account</button>
+      </div>
+      <p class="auth-switch">Already have an account? <a id="showLoginLink" href="#">Sign in</a></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     TERMS OF SERVICE MODAL
+════════════════════════════════════════════ -->
+  <div id="tosModal" class="tos-modal" style="display:none;" role="dialog" aria-modal="true" aria-label="Terms of Service">
+    <div class="tos-modal-card">
+      <div class="tos-modal-header">
+        <h2 class="tos-modal-title">Terms of Service</h2>
+        <button id="closeTosBtn" class="tos-close-btn" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="tos-modal-body">
+        <p class="tos-effective">Effective Date: August 16, 2026 &nbsp;|&nbsp; Last Updated: September 29, 2026</p>
+
+        <p>Welcome to <strong>Tipoff Fantasy</strong> ("the App," "we," "our," or "us"). By creating an account or using the App in any way, you agree to be legally bound by these Terms of Service ("Terms"). If you do not agree, do not create an account or use the App.</p>
+
+        <h3>1. Acceptance of Terms</h3>
+        <p>These Terms constitute a legally binding agreement between you and Tipoff Fantasy. Your use of the App constitutes your full and unconditional acceptance of these Terms, our Privacy Policy, and any additional rules, guidelines, or policies we may publish from time to time. We reserve the right to modify these Terms at any time. Continued use after changes are posted constitutes acceptance of the revised Terms.</p>
+
+        <h3>2. Eligibility</h3>
+        <p>You must be at least 13 years of age to create an account and use the App. We ask for your date of birth at signup and block accounts below that age. We do not knowingly permit anyone under 13 to register, and we will delete any account we learn belongs to a child under 13, along with its associated data. If you believe a child under 13 has created an account, contact us at privacy@tipofffantasy.com.</p>
+        <p>If you are between 13 and 17 years of age, you may use the App only with the knowledge and consent of a parent or legal guardian, and that parent or guardian agrees to be bound by these Terms on your behalf. By registering, you represent and warrant that you meet the age requirement above, and that you either have the legal capacity to enter into a binding agreement or have obtained the consent described in this paragraph. We reserve the right to terminate accounts of users we reasonably believe do not meet these requirements.</p>
+
+        <h3>3. Entertainment Purpose Only — No Real-Money Gambling</h3>
+        <p>Tipoff Fantasy is a <strong>free-to-play fantasy sports entertainment platform</strong>. No real money, cryptocurrency, or items of monetary value are wagered, won, or lost through the App. The App does not constitute gambling, and no prizes of monetary value are awarded. Any in-app scoring, standings, or rankings are for entertainment and social competition purposes only. We make no representation that participation constitutes lawful activity in your jurisdiction, and it is your sole responsibility to determine whether your use of the App is lawful where you reside.</p>
+
+        <h3>4. User Accounts</h3>
+        <p>You are responsible for maintaining the confidentiality of your account credentials. You are fully responsible for all activity that occurs under your account, whether or not authorized by you. You agree to notify us immediately of any unauthorized use of your account. We are not liable for any loss resulting from unauthorized account access. You may not create accounts using another person's identity, use false information, or transfer your account to any other person without our prior written consent.</p>
+
+        <h3>5. User Conduct</h3>
+        <p>You agree not to use the App to: (a) harass, abuse, threaten, defame, or harm any other user; (b) post or transmit obscene, offensive, or inappropriate content; (c) impersonate any person or entity; (d) engage in any fraudulent, deceptive, or manipulative conduct; (e) attempt to gain unauthorized access to any portion of the App or its related systems; (f) use bots, scripts, or automated tools to interact with the App; (g) violate any applicable local, state, national, or international law or regulation. We reserve the right to suspend or terminate your account for any violation of this section, at our sole discretion, without notice or liability.</p>
+
+        <h3>6. Sports Data and Accuracy</h3>
+        <p>The App may display sports statistics, scores, player data, standings, and other sports-related information sourced from third-party data providers. We make <strong>no warranties or representations</strong> regarding the accuracy, completeness, timeliness, or reliability of any sports data displayed in the App. Errors in data, scoring, or results may occur. We are not liable for any decisions made based on inaccurate or delayed data. Fantasy points, standings, and outcomes within the App may be subject to correction.</p>
+
+        <h3>7. Intellectual Property</h3>
+        <p>All content, features, branding, design, code, graphics, and user interfaces of the App are the exclusive property of Tipoff Fantasy and its licensors, protected by applicable intellectual property laws. You are granted a limited, non-exclusive, non-transferable, revocable license to use the App for personal, non-commercial entertainment purposes only. You may not copy, reproduce, distribute, modify, create derivative works of, publicly display, or exploit any portion of the App without our prior written consent. All team names, player names, and related sports content are the property of their respective owners; their use in the App is for entertainment reference only and does not imply endorsement.</p>
+
+        <h3>8. Privacy and Data Collection</h3>
+        <p>By using the App, you consent to the collection, storage, and use of your personal information as described in our Privacy Policy. We collect account information (name, email address), league activity data (draft picks, standings, chat messages), and usage analytics. This data is stored using Google Firebase services, subject to Google's data processing terms. We do not sell your personal information to third parties. We may use aggregate, anonymized data for product improvement and analytics.</p>
+
+        <h3>9. User-Generated Content</h3>
+        <p>Any content you submit through the App, including league names, display names, and chat messages ("User Content"), remains your property. By submitting User Content, you grant Tipoff Fantasy a worldwide, royalty-free, perpetual, irrevocable license to use, store, display, and distribute that content in connection with operating the App. You represent that your User Content does not infringe any third-party rights, is not unlawful, and does not violate these Terms. We reserve the right to remove any User Content at our sole discretion.</p>
+
+        <h3>10. Disclaimer of Warranties</h3>
+        <p>THE APP IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR UNINTERRUPTED, ERROR-FREE OPERATION. WE DO NOT WARRANT THAT THE APP WILL MEET YOUR REQUIREMENTS, THAT IT WILL BE UNINTERRUPTED OR SECURE, THAT DEFECTS WILL BE CORRECTED, OR THAT THE APP OR ITS SERVERS ARE FREE OF VIRUSES OR OTHER HARMFUL COMPONENTS.</p>
+
+        <h3>11. Limitation of Liability</h3>
+        <p>TO THE FULLEST EXTENT PERMITTED BY APPLICABLE LAW, TIPOFF FANTASY AND ITS OWNERS, OFFICERS, EMPLOYEES, AGENTS, PARTNERS, AND LICENSORS SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES, INCLUDING BUT NOT LIMITED TO LOSS OF PROFITS, DATA, GOODWILL, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR RELATED TO YOUR ACCESS TO OR USE OF (OR INABILITY TO USE) THE APP, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU FOR ALL CLAIMS EXCEED ONE HUNDRED DOLLARS ($100.00). SOME JURISDICTIONS DO NOT ALLOW THE EXCLUSION OF CERTAIN WARRANTIES OR LIMITATION OF LIABILITY, SO SOME OF THE ABOVE LIMITATIONS MAY NOT APPLY TO YOU.</p>
+
+        <h3>12. Indemnification</h3>
+        <p>You agree to indemnify, defend, and hold harmless Tipoff Fantasy and its owners, officers, employees, and agents from and against any and all claims, liabilities, damages, losses, costs, and expenses (including reasonable attorneys' fees) arising out of or related to: (a) your use of the App; (b) your violation of these Terms; (c) your violation of any rights of another person or entity; or (d) any User Content you submit through the App.</p>
+
+        <h3>13. Third-Party Services</h3>
+        <p>The App integrates with third-party services including but not limited to Google Firebase (authentication and database), sports data providers, and web hosting services. Your use of these services is subject to their respective terms and privacy policies. We are not responsible for the practices or content of any third-party services. Links or integrations with third-party services do not constitute our endorsement of those services.</p>
+
+        <h3>14. Service Availability and Modifications</h3>
+        <p>We reserve the right to modify, suspend, or discontinue the App (or any portion thereof) at any time, with or without notice, and without liability to you. We may perform maintenance, updates, or changes that temporarily make the App unavailable. We do not guarantee any particular uptime or availability level. We are not liable for any loss or damage resulting from service interruptions or discontinuation.</p>
+
+        <h3>15. Termination</h3>
+        <p>We may suspend or terminate your account and access to the App at any time, for any reason or no reason, including violation of these Terms, without notice or liability. Upon termination, your right to use the App ceases immediately. Provisions of these Terms that by their nature should survive termination — including Sections 7, 10, 11, 12, 16, and 17 — shall survive.</p>
+
+        <h3>16. Governing Law and Dispute Resolution</h3>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the State of Nevada, United States, without regard to its conflict of law provisions. Any dispute arising out of or relating to these Terms or the App shall first be submitted to informal resolution by contacting us. If informal resolution fails, disputes shall be resolved by binding individual arbitration under the rules of the American Arbitration Association, conducted in Nevada. YOU WAIVE YOUR RIGHT TO A JURY TRIAL AND TO PARTICIPATE IN ANY CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION.</p>
+
+        <h3>17. Entire Agreement</h3>
+        <p>These Terms, together with our Privacy Policy, constitute the entire agreement between you and Tipoff Fantasy with respect to the App and supersede all prior agreements, representations, and understandings. If any provision of these Terms is found to be invalid or unenforceable, the remaining provisions shall remain in full force and effect. Our failure to enforce any right or provision of these Terms shall not constitute a waiver of that right or provision.</p>
+
+        <h3>18. Contact</h3>
+        <p>Questions about these Terms may be directed to us through the App's support channel.</p>
+
+        <p class="tos-footer-note">By creating an account, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service in their entirety.</p>
+      </div>
+      <div class="tos-modal-footer">
+        <button id="tosDeclineBtn" class="btn-ghost">Decline</button>
+        <button id="tosAcceptBtn" class="btn-primary">Accept &amp; Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Basketball court intro overlay - lives OUTSIDE splashScreen so
+       splash opacity:0 during crossfade doesn't hide the animation ── -->
+  <div id="mmIntro" aria-hidden="true" style="display:none;">
+    <!-- Court SVG - same elements as nav icon, scaled to full screen portrait -->
+    <svg class="mm-bsv" viewBox="0 0 390 760" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Court outer boundary -->
+      <path class="mm-path mm-court-outline" pathLength="100"
+            d="M 55,85 L 335,85 L 335,675 L 55,675 Z"/>
+      <!-- Half-court line -->
+      <path class="mm-path mm-court-half" pathLength="100"
+            d="M 55,380 L 335,380"/>
+      <!-- Center circle -->
+      <circle class="mm-path mm-court-circle" pathLength="100"
+              cx="195" cy="380" r="50"/>
+      <!-- Top key box -->
+      <path class="mm-path mm-court-key mm-court-key-t" pathLength="100"
+            d="M 125,85 L 125,219 L 265,219 L 265,85"/>
+      <!-- Bottom key box -->
+      <path class="mm-path mm-court-key mm-court-key-b" pathLength="100"
+            d="M 125,675 L 125,541 L 265,541 L 265,675"/>
+      <!-- Top 3-point arc (corners + arc, curves toward center) -->
+      <path class="mm-path mm-court-3pt mm-court-3pt-t" pathLength="100"
+            d="M 109,85 L 109,219 A 95,95 0 0 0 281,219 L 281,85"/>
+      <!-- Bottom 3-point arc -->
+      <path class="mm-path mm-court-3pt mm-court-3pt-b" pathLength="100"
+            d="M 109,675 L 109,541 A 95,95 0 0 1 281,541 L 281,675"/>
+      <!-- Baskets (filled dots, same as nav icon) -->
+      <circle class="mm-court-basket" cx="195" cy="125" r="11"/>
+      <circle class="mm-court-basket" cx="195" cy="635" r="11"/>
+    </svg>
+    <!-- Central glow -->
+    <div class="mm-glow"></div>
+    <!-- Logo + title -->
+    <div class="mm-content">
+      <img class="mm-intro-logo" src="logo-icon.png" alt="Tipoff Fantasy" width="120" height="120" />
+      <div class="mm-intro-title">TIPOFF FANTASY</div>
+      <div class="mm-intro-sub"><span>Draft.</span><span>Compete.</span><span>Win.</span></div>
+    </div>
+    <!-- Flash burst -->
+    <div class="mm-flash"></div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     SPLASH SCREEN
+════════════════════════════════════════════ -->
+  <div id="splashScreen" class="screen" style="display:none;">
+
+    <div class="splash-hero">
+      <div class="splash-logo">
+        <div class="splash-flash"></div>
+        <div class="splash-rays"></div>
+        <img src="logo-icon.png" class="splash-logo-img" width="200" height="200" alt="Tipoff Fantasy logo" />
+        <p class="splash-tag">Draft. Compete. Win.</p>
+      </div>
+      <div class="splash-actions">
+        <button id="createLeagueSplashBtn" class="btn-primary btn-lg">+ Create League</button>
+        <button id="joinLeagueSplashBtn" class="btn-ghost btn-lg">Join League</button>
+        <button id="splashBackBtn" class="btn-sign-out" style="margin-top:8px;">Back</button>
+      </div>
+    </div>
+    <div class="splash-leagues">
+      <h3 class="splash-leagues-title">Your Leagues</h3>
+      <div id="seasonLeagueSlot"></div>
+      <div id="savedLeaguesList" class="saved-leagues-list">
+        <p class="no-leagues">No leagues yet. Create or join one above.</p>
+      </div>
+    </div>
+    <!-- Footer actions -->
+    <div class="splash-footer">
+      <button id="signOutBtn" class="btn-sign-out">Sign Out</button>
+    </div>
+
+    <!-- Join modal -->
+    <div id="joinModal" class="modal-backdrop" style="display:none;">
+      <div class="modal-card">
+        <h3>Join a League</h3>
+        <p class="modal-sub" id="joinModalSub">Enter the 6-character league code from your commissioner.</p>
+        <input type="text" id="joinCodeInput" placeholder="ABC123" maxlength="6" class="code-input" />
+        <div id="joinError" class="auth-error" style="display:none;"></div>
+        <div class="modal-actions">
+          <button id="joinCancelBtn" class="btn-ghost">Cancel</button>
+          <button id="joinConfirmBtn" class="btn-primary">Join</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- REGULAR SEASON (lab): self-contained, rendered by src/season/season.js -->
+  <div id="seasonApp" style="display:none;"></div>
+
+  <!-- ═══════════════════════════════════════════
+     MAIN APP
+════════════════════════════════════════════ -->
+  <div id="mainApp" style="display:none;">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="logo-icon.png" class="logo-mark sidebar-logo-img" width="42" height="42" alt="Tipoff Fantasy" />
+        <span class="sidebar-logo-text"><strong>TIPOFF</strong><span class="slt-light">FANTASY</span></span>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-page="home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Court outline -->
+            <rect x="1" y="3" width="22" height="18" rx="0.5"/>
+            <!-- Half-court line -->
+            <line x1="12" y1="3" x2="12" y2="21"/>
+            <!-- Center circle -->
+            <circle cx="12" cy="12" r="3"/>
+            <!-- Left key -->
+            <rect x="1" y="7.5" width="5" height="9"/>
+            <!-- Right key -->
+            <rect x="18" y="7.5" width="5" height="9"/>
+            <!-- Left basket -->
+            <circle cx="2.5" cy="12" r="1.5" fill="currentColor"/>
+            <!-- Right basket -->
+            <circle cx="21.5" cy="12" r="1.5" fill="currentColor"/>
+            <!-- Left 3pt arc -->
+            <path d="M6 6.5 A6.3 6.3 0 0 1 6 17.5"/>
+            <!-- Right 3pt arc -->
+            <path d="M18 17.5 A6.3 6.3 0 0 1 18 6.5"/>
+          </svg>
+          Home
+        </button>
+        <button class="nav-btn" data-page="players">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+            <line x1="19" y1="3" x2="19" y2="9"/>
+            <line x1="16" y1="6" x2="22" y2="6"/>
+          </svg>
+          Draft
+        </button>
+        <button class="nav-btn" data-page="teams">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="2" y="7" width="20" height="14" rx="2" />
+            <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+          </svg>
+          Teams
+        </button>
+        <button class="nav-btn" data-page="standings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg>
+          Standings
+        </button>
+        <button class="nav-btn" data-page="bracket">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 4h6v4H4zM14 4h6v4h-6zM14 10h6v4h-6zM4 16h6v4H4zM14 16h6v4h-6z" />
+            <line x1="10" y1="6" x2="14" y2="6" />
+            <line x1="10" y1="18" x2="14" y2="18" />
+            <line x1="20" y1="8" x2="20" y2="12" />
+            <line x1="20" y1="12" x2="14" y2="12" />
+            <line x1="4" y1="12" x2="10" y2="12" />
+            <line x1="10" y1="12" x2="10" y2="18" />
+          </svg>
+          Bracket
+        </button>
+        <button class="nav-btn" data-page="season">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z" />
+            <path d="M7 6H5a2 2 0 0 0 0 4h2M17 6h2a2 2 0 0 1 0 4h-2" />
+          </svg>
+          Season
+        </button>
+        <button class="nav-btn" data-page="chat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Chat
+          <span class="chat-badge" style="display:none;"></span>
+        </button>
+        <button class="nav-btn" data-page="news">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/>
+            <path d="M18 14h-8M15 18h-5M10 6h8v4h-8z"/>
+          </svg>
+          News
+        </button>
+        <button class="nav-btn" data-page="settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          Settings
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="sidebar-profile-btn" id="sidebarUser" data-page="profile"></button>
+        <button class="nav-btn signout-btn" id="navSignOutBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Sign Out
+        </button>
+      </div>
+    </aside>
+
+    <!-- ── MOBILE NAV ──────────────────────────────────
+         One button at the bottom; the whole menu arrives as a
+         vertical sheet. Hidden on desktop, where the sidebar is
+         always visible. The sheet's contents are cloned from
+         .sidebar-nav at runtime so there is exactly one list of
+         destinations to maintain. -->
+    <button class="mnav-trigger" id="mobileNavBtn" type="button"
+            aria-expanded="false" aria-controls="navSheet" aria-haspopup="menu">
+      <svg class="mnav-burger" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round">
+        <line x1="4" y1="7" x2="20" y2="7" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="17" x2="20" y2="17" />
+      </svg>
+      <span class="mnav-label" id="mobileNavLabel">Home</span>
+      <svg class="mnav-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15" />
+      </svg>
+    </button>
+
+    <div class="nav-sheet-backdrop" id="navSheetBackdrop" hidden></div>
+    <nav class="nav-sheet" id="navSheet" hidden aria-label="Main menu">
+      <div class="nav-sheet-grabber" aria-hidden="true"></div>
+      <div class="nav-sheet-items" id="navSheetItems"></div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <!-- Mobile sticky clock bar (hidden on desktop) -->
+      <div class="mobile-clock-bar" id="mobileClockBar">
+        <button class="mcb-profile-btn" id="mcbProfileBtn" aria-label="Profile"></button>
+        <div class="mcb-clock-info">
+          <div class="mcb-label">On the Clock</div>
+          <div class="mcb-manager" id="mcbManager">-</div>
+        </div>
+        <div class="mcb-timer" id="mcbTimer"></div>
+      </div>
+
+      <!-- YOU'RE ON THE CLOCK banner (shows on any page when it's your pick) -->
+      <div class="otc-banner" id="otcBanner" style="display:none;">
+        <div class="otc-inner">
+          <span class="otc-pulse"></span>
+          <div class="otc-text">
+            <span class="otc-label">Your Pick!</span>
+            <span class="otc-sub">You're on the clock</span>
+          </div>
+          <button class="otc-btn" id="otcDraftBtn">Draft Now</button>
+        </div>
+      </div>
+
+      <!-- ── HOME ─────────────────────────────────── -->
+      <section id="homePage" class="page active-page">
+        <!-- Desktop top bar -->
+        <div class="home-top-bar">
+          <div class="home-top-bar-right">
+            <button class="home-notif-btn" id="homeNotifBtn" aria-label="Notifications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </button>
+            <div class="home-user-chip" id="homeUserChip">
+              <div class="home-user-avatar" id="homeUserAvatar"></div>
+              <span id="homeUserName">-</span>
+              <span class="home-user-chevron">▾</span>
+            </div>
+          </div>
+        </div>
+        <div class="page-header">
+          <h2 id="homeLeagueName">My League</h2>
+          <span id="homeStatusPill" class="status-pill status-setup">Setup</span>
+        </div>
+
+        <!-- Tournament Banner -->
+        <div id="tournamentBanner" class="tourn-banner tourn-banner--empty"></div>
+
+        <!-- Scheduled Draft Countdown -->
+        <div id="draftCountdownBanner" class="dcb" style="display:none;">
+          <div class="dcb-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="dcb-text">
+            <span class="dcb-label">Draft starts in <strong id="dcbCountdown">-</strong></span>
+            <span class="dcb-time" id="dcbTime">-</span>
+          </div>
+        </div>
+
+        <!-- On the Clock hero -->
+        <div class="home-hero-card">
+          <div class="hero-bg-player"></div>
+          <div class="hero-left">
+            <div class="hero-label"><span id="heroRoundLabel">On the Clock</span></div>
+            <div id="homePickManager" class="hero-manager">-</div>
+            <div id="homePickLabel" class="hero-pick-label">No draft started</div>
+            <div class="hero-timer-controls commissioner-only">
+              <button id="startTimerBtnHome" class="btn-hero-primary">Make Pick</button>
+              <button id="pauseBtnHome" class="btn-hero-ghost">⏸ Pause</button>
+              <button id="resetTimerBtn" class="btn-hero-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px;margin-right:5px;"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Reset</button>
+            </div>
+          </div>
+          <div class="hero-clock-wrap">
+            <svg class="hero-ring" viewBox="0 0 160 160">
+              <circle class="hero-ring-bg" cx="80" cy="80" r="70"/>
+              <circle class="hero-ring-progress" id="heroRingProgress" cx="80" cy="80" r="70"/>
+            </svg>
+            <div class="hero-clock-inner">
+              <div class="hero-timer" id="homeTimer">-</div>
+              <div class="hero-timer-label">TIME REMAINING</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── MY TEAM ─────────────────────────────────
+             Replaces the On the Clock hero once the draft is done.
+             The draft lasts a night; the tournament lasts days, so the
+             biggest element on the page should not be a dead timer for
+             the entire part that matters. -->
+        <div class="myteam-card" id="myTeamCard" style="display:none;">
+          <div class="mt-head">
+            <div>
+              <div class="mt-eyebrow">My Team</div>
+              <div class="mt-name" id="mtName">-</div>
+            </div>
+            <div class="mt-figures">
+              <div class="mt-fig">
+                <div class="mt-fig-val" id="mtRank">-</div>
+                <div class="mt-fig-label">Rank</div>
+              </div>
+              <div class="mt-fig-div" aria-hidden="true"></div>
+              <div class="mt-fig">
+                <div class="mt-fig-val" id="mtFpts">-</div>
+                <div class="mt-fig-label">FPTS</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-live" id="mtLive" style="display:none;"></div>
+
+          <div class="mt-roster" id="mtRoster"></div>
+
+          <div class="mt-foot">
+            <span class="mt-foot-count" id="mtFootCount"></span>
+            <button class="mt-foot-link" id="mtFootLink" type="button">View full roster &rsaquo;</button>
+          </div>
+        </div>
+
+        <!-- Stat tiles -->
+        <div class="home-stats-grid" id="homeStatsGrid">
+          <div class="stat-tile">
+            <div class="st-icon st-icon-gold">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>
+            </div>
+            <div class="st-val" id="statMyRank">-</div>
+            <div class="st-label">My Rank</div>
+            <div class="st-sub" id="statMyRankSub">-</div>
+          </div>
+          <div class="stat-tile">
+            <div class="st-icon st-icon-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="st-val" id="statMyFpts">-</div>
+            <div class="st-label">My Points</div>
+            <div class="st-sub" id="statMyFptsSub">Season total</div>
+          </div>
+          <div class="stat-tile">
+            <div class="st-icon st-icon-green">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="st-val" id="statPicksLeft">-</div>
+            <div class="st-label">Picks Left</div>
+            <div class="st-sub" id="statPicksLeftSub">-</div>
+          </div>
+          <div class="stat-tile stat-tile-leader">
+            <div class="st-icon st-icon-purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div class="st-val st-val-sm" id="statLeaderName">-</div>
+            <div class="st-label">Leading</div>
+            <div class="st-sub" id="statLeaderSub">-</div>
+          </div>
+        </div>
+
+        <!-- Action grid -->
+        <h3 class="section-title" style="margin-bottom:10px;">Quick Actions</h3>
+        <div class="home-grid">
+          <div class="home-card" data-page="players">
+            <div class="hc-icon hc-blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/><line x1="19" y1="3" x2="19" y2="9"/><line x1="16" y1="6" x2="22" y2="6"/></svg>
+            </div>
+            <div class="hc-info">
+              <div class="hc-label">Draft</div>
+              <div class="hc-sub">Draft room &amp; player pool</div>
+            </div>
+          </div>
+          <div class="home-card" data-page="teams">
+            <div class="hc-icon hc-purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+            </div>
+            <div class="hc-info">
+              <div class="hc-label">Teams</div>
+              <div class="hc-sub">View all team rosters</div>
+            </div>
+          </div>
+          <div class="home-card" data-page="standings">
+            <div class="hc-icon hc-orange">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="hc-info">
+              <div class="hc-label">Standings</div>
+              <div class="hc-sub">Check the race</div>
+            </div>
+          </div>
+          <div class="home-card" data-page="bracket">
+            <div class="hc-icon hc-teal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h6v4H4zM14 4h6v4h-6zM14 10h6v4h-6zM4 16h6v4H4zM14 16h6v4h-6z"/></svg>
+            </div>
+            <div class="hc-info">
+              <div class="hc-label">Bracket</div>
+              <div class="hc-sub">Tournament tree</div>
+            </div>
+          </div>
+          <div class="home-card" data-page="chat">
+            <div class="hc-icon hc-pink">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="hc-info">
+              <div class="hc-label">Chat</div>
+              <div class="hc-sub">League messages</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity Feed -->
+        <div class="home-section">
+          <h3 class="section-title">Activity</h3>
+          <div id="activityFeed" class="activity-feed">
+            <p class="feed-empty">No activity yet.</p>
+          </div>
+        </div>
+
+        <!-- Home Footer -->
+        <div class="home-footer">
+          <span class="home-footer-brand">Tipoff Fantasy</span>
+          <div class="home-footer-socials">
+            <a href="https://x.com/tipofffantasy" class="home-footer-icon" aria-label="X (Twitter)" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/playtipoff/" class="home-footer-icon" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="https://www.tiktok.com/@tipofffantasy" class="home-footer-icon" aria-label="TikTok" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 5.82A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5 2.59 2.59 0 1 1 .77-5.06V9.68a5.67 5.67 0 0 0-.77-.05A5.66 5.66 0 1 0 15.54 15.4V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3a4.28 4.28 0 0 1-3.24-1.48z"/></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DRAFT (Draft Room + Player Pool) ─────────── -->
+      <section id="playersPage" class="page" style="display:none;">
+
+        <!-- Inner tab toggle -->
+        <div class="draft-tabs-row">
+          <div class="draft-inner-tabs">
+            <button class="dit-btn active" data-tab="room">Draft Room</button>
+            <button class="dit-btn" data-tab="pool">Player Pool</button>
+          </div>
+          <button class="dit-autopick-btn commissioner-only" id="draftAutopickBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><polyline points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Autopick
+          </button>
+        </div>
+
+        <!-- ── DRAFT ROOM TAB ── -->
+        <div id="draftRoomTab" class="dit-pane">
+          <div class="draft-hero">
+            <div class="draft-hero-left">
+              <h2 class="draft-hero-title">Snake Draft Room</h2>
+              <p class="draft-hero-sub" id="draftHeroSub">Waiting for draft to begin…</p>
+            </div>
+          </div>
+
+          <div class="draft-order-row">
+            <div class="draft-order-strip-wrap">
+              <div class="draft-order-strip" id="draftOrderStrip"></div>
+            </div>
+            <div class="draft-pick-card" id="draftPickCard">
+              <div class="dpc-info">
+                <div class="dpc-label">On the Clock</div>
+                <div class="dpc-manager" id="draftPickManager">-</div>
+                <div class="dpc-round" id="draftPickLabel">-</div>
+              </div>
+              <div class="dpc-timer" id="dcbTimer">-</div>
+            </div>
+          </div>
+
+          <!-- Recent picks - horizontal strip below order -->
+          <div class="draft-recent-strip">
+            <span class="draft-recent-label">Recent Picks</span>
+            <div class="draft-recent-scroll" id="draftRecentPicks"></div>
+          </div>
+
+          <div class="draft-content">
+            <div class="draft-left">
+              <!-- Roster requirements for whoever is on the clock -->
+              <div class="roster-req-bar" id="rosterReqBar" style="display:none;"></div>
+
+              <div class="draft-toolbar">
+                <input type="text" id="draftSearch" placeholder="Search players…" class="pool-search" />
+                <select id="draftPosFilter" class="pool-select">
+                  <option value="">All Positions</option>
+                  <option value="G">Guards</option>
+                  <option value="F">Forwards</option>
+                  <option value="C">Centers</option>
+                </select>
+              </div>
+              <div class="pool-table-wrap">
+                <div class="pool-header" id="draftRoomPoolHeader">
+                  <span class="ph-rank">#</span>
+                  <span class="ph-player">Player</span>
+                  <span class="ph-seed">Seed</span>
+                  <span class="ph-stat sortable" data-col="points">PTS</span>
+                  <span class="ph-stat sortable" data-col="rebounds">REB</span>
+                  <span class="ph-stat sortable" data-col="assists">AST</span>
+                  <span class="ph-stat sortable" data-col="steals">STL</span>
+                  <span class="ph-stat sortable" data-col="blocks">BLK</span>
+                  <span class="ph-stat sortable" data-col="fpts">FPTS</span>
+                  <span class="ph-action">Action</span>
+                </div>
+                <div id="draftPlayerGrid"></div>
+              </div>
+
+              <!-- Your queue: feeds autopick when the timer expires -->
+              <div class="queue-panel" id="queuePanel">
+                <div class="queue-head">
+                  <span class="queue-title">Your Queue <span class="queue-count" id="queueCount"></span></span>
+                  <button class="queue-clear" id="queueClearBtn">Clear</button>
+                </div>
+                <div id="queueList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Commissioner controls -->
+          <div class="draft-commissioner-controls commissioner-only">
+            <button id="startTimerBtnDraft" class="btn-sm btn-green">Start</button>
+            <button id="pauseBtnDraft" class="btn-sm btn-ghost">Pause</button>
+            <button id="resetTimerBtnDraft" class="btn-sm btn-ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px;margin-right:5px;"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>Reset</button>
+            <div class="dcc-divider"></div>
+            <button id="undoPickBtn" class="btn-sm btn-ghost">↩ Undo</button>
+            <button id="autopickBtn" class="btn-sm btn-ghost">Autopick</button>
+            <button id="skipPickBtn" class="btn-sm btn-ghost">Skip</button>
+            <button id="resetDraftBtn" class="btn-sm btn-red">Reset Draft</button>
+          </div>
+        </div>
+
+        <!-- ── PLAYER POOL TAB ── -->
+        <div id="playerPoolTab" class="dit-pane" style="display:none;">
+          <div class="page-header">
+            <h2>Player Pool</h2>
+            <span id="poolAvailCount" class="muted-badge">available</span>
+          </div>
+          <div class="pool-view-toggle">
+            <button class="view-btn active" id="poolListViewBtn">≡ List</button>
+            <button class="view-btn" id="poolCardViewBtn">⊞ Cards</button>
+          </div>
+          <div class="pool-toolbar">
+            <input type="text" id="poolSearch" placeholder="Search players…" class="pool-search" />
+            <select id="poolSeedFilter" class="pool-select">
+              <option value="">All Seeds</option>
+              <option value="1-4">Seeds 1–4</option>
+              <option value="5-8">Seeds 5–8</option>
+              <option value="9-12">Seeds 9–12</option>
+              <option value="13-16">Seeds 13–16</option>
+            </select>
+            <select id="poolSortSelect" class="pool-select">
+              <option value="fpts">Best Available (FPTS)</option>
+              <option value="points">Most Points</option>
+              <option value="rebounds">Most Rebounds</option>
+              <option value="assists">Most Assists</option>
+            </select>
+          </div>
+          <div class="pool-table-wrap">
+            <div class="pool-header" id="playerPoolHeader">
+              <span class="ph-rank">#</span>
+              <span class="ph-player">Player</span>
+              <span class="ph-seed">Seed</span>
+              <span class="ph-stat sortable" data-col="points">PTS</span>
+              <span class="ph-stat sortable" data-col="rebounds">REB</span>
+              <span class="ph-stat sortable" data-col="assists">AST</span>
+              <span class="ph-stat sortable" data-col="steals">STL</span>
+              <span class="ph-stat sortable" data-col="blocks">BLK</span>
+              <span class="ph-stat sortable" data-col="fpts">FPTS</span>
+              <span class="ph-action">Status</span>
+            </div>
+            <div id="playerPoolGrid"></div>
+          </div>
+          <div class="player-card-grid" id="playerCardGrid"></div>
+        </div>
+
+      </section>
+
+      <!-- ── TEAMS ─────────────────────────────────── -->
+      <section id="teamsPage" class="page" style="display:none;">
+        <div class="page-header">
+          <h2>Teams &amp; Rosters</h2>
+        </div>
+        <div id="teamsGrid" class="teams-grid"></div>
+      </section>
+
+      <!-- ── STANDINGS ──────────────────────────────── -->
+      <section id="standingsPage" class="page" style="display:none;">
+        <div class="page-header">
+          <h2>Standings</h2>
+          <div style="display:flex;gap:8px;align-items:center;">
+          </div>
+        </div>
+        <div class="standings-header-row">
+          <span class="sh-rank">Rank</span>
+          <span class="sh-name">Manager</span>
+          <span class="sh-pts">FPTS</span>
+          <span class="sh-proj">Proj</span>
+          <span class="sh-cat">PTS</span>
+          <span class="sh-cat">REB</span>
+          <span class="sh-cat">AST</span>
+          <span class="sh-cat">STL</span>
+          <span class="sh-cat">BLK</span>
+          <span class="sh-delta">±</span>
+        </div>
+        <div id="standingsList" class="standings-list"></div>
+
+        <!-- Points Projection Panel -->
+        <div class="proj-panel" id="projPanel" style="display:none;">
+          <div class="proj-panel-header">
+            <div class="proj-panel-title">
+              <span class="proj-dot"></span>
+              Points Remaining
+            </div>
+            <span class="proj-subtitle">Max possible if all alive teams win out</span>
+          </div>
+          <div id="projList" class="proj-list"></div>
+        </div>
+      </section>
+
+      <!-- ── SEASON ─────────────────────────────────── -->
+      <section id="seasonPage" class="page" style="display:none;">
+        <div class="page-header">
+          <div>
+            <h2>Season</h2>
+            <span class="page-sub" id="seasonMeta"></span>
+          </div>
+          <button class="btn btn-primary" id="closeOutBtn" type="button" style="display:none;"></button>
+        </div>
+
+        <div class="season-table">
+          <div class="season-standings-header">
+            <span class="sh-rank">Rank</span>
+            <span class="sh-name">Manager</span>
+            <span class="ss-trophies ss-hide-sm">Titles</span>
+            <span class="ss-num">W</span>
+            <span class="ss-num ss-hide-sm">Top 3</span>
+            <span class="ss-num">Events</span>
+            <span class="ss-num ss-pts">FPTS</span>
+            <span class="ss-num ss-hide-sm">Avg</span>
+          </div>
+          <div id="seasonStandingsList" class="season-standings-list"></div>
+        </div>
+
+        <h3 class="season-section-title">Trophy Case</h3>
+        <div id="seasonTrophyCase" class="trophy-case"></div>
+      </section>
+
+      <!-- ── BRACKET ────────────────────────────────── -->
+      <section id="bracketPage" class="page" style="display:none;">
+        <div class="page-header">
+          <h2>Tournament Bracket</h2>
+        </div>
+
+        <!-- Live scores from the ESPN feed. Hidden until games exist. -->
+        <div class="live-score-strip" id="liveScoreStrip" style="display:none;"></div>
+
+        <!-- Commissioner override notice / edit hint -->
+        <div id="bracketOverrideBar" style="display:none;"></div>
+
+        <!-- View toggle -->
+        <div class="bracket-view-toggle">
+          <button class="bvt-btn active" id="bvtYourBracket">Your Bracket</button>
+          <button class="bvt-btn" id="bvtTournaments">Tournaments</button>
+        </div>
+
+        <!-- Your Bracket view -->
+        <div id="yourBracketView">
+          <div class="bracket-tabs">
+            <button class="bracket-tab active" data-region="East">East</button>
+            <button class="bracket-tab" data-region="South">South</button>
+            <button class="bracket-tab" data-region="Midwest">Midwest</button>
+            <button class="bracket-tab" data-region="West">West</button>
+            <button class="bracket-tab bracket-tab-ff" data-region="FinalFour">Final Four</button>
+          </div>
+          <div id="bracketContent" class="bracket-content"></div>
+        </div>
+
+        <!-- Tournaments preview view -->
+        <div id="tournamentsView" style="display:none;">
+          <div id="tournamentsContent"></div>
+        </div>
+      </section>
+
+      <!-- ── CHAT ─────────────────────────────────── -->
+      <section id="chatPage" class="page chat-page" style="display:none;">
+        <div class="page-header">
+          <h2>League Chat</h2>
+        </div>
+        <div class="chat-wrap">
+          <div id="chatMessages" class="chat-messages"></div>
+          <div class="chat-input-row">
+            <input type="text" id="chatInput" class="chat-input" placeholder="Say something to the league…" maxlength="280" autocomplete="off" />
+            <button id="chatSendBtn" class="chat-send-icon-btn" aria-label="Send message">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── PROFILE ──────────────────────────────── -->
+      <section id="profilePage" class="page" style="display:none;">
+
+        <!-- Hero banner -->
+        <div class="profile-hero" id="profileHero">
+          <div class="profile-hero-bg" id="profileHeroBg"></div>
+          <div class="profile-hero-body">
+            <div class="profile-avatar-ring" id="profileAvatarRing">
+              <div id="profileAvatar" class="profile-avatar-lg"></div>
+              <button class="avatar-upload-btn" id="avatarUploadBtn" title="Change photo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" width="14" height="14"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </button>
+              <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" />
+            </div>
+            <div class="profile-hero-info">
+              <div class="profile-name-row" id="profileNameRow">
+                <span id="profileNameDisplay" class="profile-name"></span>
+                <button class="profile-edit-btn" id="profileEditBtn" title="Edit name">Edit</button>
+              </div>
+              <div class="profile-edit-row" id="profileEditRow" style="display:none;">
+                <input type="text" id="profileNameInput" class="profile-name-input" maxlength="24" placeholder="Display name" />
+                <button class="btn-primary btn-sm" id="profileSaveBtn">Save</button>
+                <button class="btn-ghost btn-sm" id="profileCancelBtn">Cancel</button>
+              </div>
+              <div class="profile-email" id="profileEmail"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats row -->
+        <div class="profile-stats-grid" id="profileStats"></div>
+
+        <!-- Your Look: accent color used for your avatar ring, standings
+             row and draft picks so managers are distinguishable at a glance -->
+        <div class="panel look-panel">
+          <h3 class="panel-title">Your Color</h3>
+          <p class="panel-sub">Marks your picks, your standings row, and your avatar ring.</p>
+          <div class="look-swatches" id="lookSwatches">
+            <button type="button" class="look-swatch" data-color="#f26b21" style="--sw:#f26b21" aria-label="Orange"></button>
+            <button type="button" class="look-swatch" data-color="#4f8ff7" style="--sw:#4f8ff7" aria-label="Blue"></button>
+            <button type="button" class="look-swatch" data-color="#34d399" style="--sw:#34d399" aria-label="Green"></button>
+            <button type="button" class="look-swatch" data-color="#f6a84e" style="--sw:#f6a84e" aria-label="Gold"></button>
+            <button type="button" class="look-swatch" data-color="#a78bfa" style="--sw:#a78bfa" aria-label="Purple"></button>
+            <button type="button" class="look-swatch" data-color="#22d3ee" style="--sw:#22d3ee" aria-label="Teal"></button>
+            <button type="button" class="look-swatch" data-color="#f472b6" style="--sw:#f472b6" aria-label="Pink"></button>
+            <button type="button" class="look-swatch" data-color="#94a3b8" style="--sw:#94a3b8" aria-label="Slate"></button>
+          </div>
+        </div>
+
+        <!-- Invite / Refer a Friend -->
+        <div class="profile-invite-card">
+          <div class="profile-invite-icon"></div>
+          <div class="profile-invite-text">
+            <div class="profile-invite-title">Invite Friends</div>
+            <div class="profile-invite-sub">Send your league link. They join in one tap.</div>
+          </div>
+          <button class="profile-invite-btn" id="profileShareBtn">Share Invite</button>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="profile-actions-grid">
+          <button class="profile-action-card" id="profileGoSettings">
+            <div class="profile-action-icon pac-settings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </div>
+            <span class="profile-action-label">Settings</span>
+          </button>
+          <button class="profile-action-card" id="profileGoDraft">
+            <div class="profile-action-icon pac-draft">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span class="profile-action-label">Draft Room</span>
+          </button>
+          <button class="profile-action-card" id="profileGoStandings">
+            <div class="profile-action-icon pac-standings">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="profile-action-label">Standings</span>
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ── SETTINGS ───────────────────────────────── -->
+      <!-- ══════════════════════════════════════════════════
+           NEWS PAGE
+      ══════════════════════════════════════════════════ -->
+      <section id="newsPage" class="page" style="display:none;">
+        <div class="page-header news-page-header">
+          <div>
+            <h2>Latest Updates</h2>
+          </div>
+          <button class="news-refresh-btn" id="newsRefreshBtn" title="Refresh">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">
+              <path d="M23 4v6h-6M1 20v-6h6"/>
+              <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/>
+            </svg>
+          </button>
+        </div>
+        <div id="newsFeed" class="news-feed">
+          <div class="news-loading" id="newsLoading">
+            <div class="news-spinner"></div>
+            <span>Loading news...</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="settingsPage" class="page" style="display:none;">
+        <div class="page-header">
+          <h2>Settings</h2>
+        </div>
+
+        <!-- Account -->
+        <button class="settings-profile-row" id="settingsProfileBtn">
+          <div class="spr-avatar" id="settingsProfileAvatar"></div>
+          <div class="spr-info">
+            <span class="spr-name" id="settingsProfileName">-</span>
+            <span class="spr-sub">View and edit your profile</span>
+          </div>
+          <svg class="spr-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+
+        <!-- ══ ACCOUNT ══ -->
+        <div class="set-label">Account</div>
+        <div class="panel set-panel">
+          <div class="set-row">
+            <div class="set-row-main">
+              <span class="set-row-title">Email</span>
+              <span class="set-row-sub" id="acctEmail">—</span>
+            </div>
+            <button class="set-row-btn" id="acctChangeEmailBtn">Change</button>
+          </div>
+
+          <div class="set-row">
+            <div class="set-row-main">
+              <span class="set-row-title">Password</span>
+              <span class="set-row-sub">Update your sign-in password</span>
+            </div>
+            <button class="set-row-btn" id="acctChangePwBtn">Change</button>
+          </div>
+
+          <div class="set-row">
+            <div class="set-row-main">
+              <span class="set-row-title">Sign Out</span>
+              <span class="set-row-sub">You'll stay in your leagues</span>
+            </div>
+            <button class="set-row-btn" id="acctSignOutBtn">Sign Out</button>
+          </div>
+        </div>
+
+        <!-- ══ MY LEAGUES ══ -->
+        <div class="set-label">My Leagues</div>
+        <div class="panel set-panel">
+          <div id="myLeaguesList" class="ml-list"><!-- rendered by JS --></div>
+
+          <div class="ml-join-row">
+            <input type="text" id="mlJoinInput" class="ml-join-input" placeholder="Enter league code" maxlength="6" autocapitalize="characters" />
+            <button type="button" id="mlJoinBtn" class="ml-join-btn">Join</button>
+          </div>
+          <p class="muted ml-hint">Switching leagues keeps your place in all of them.</p>
+        </div>
+
+        <!-- ══ LEAGUE RULES ══ -->
+        <div class="set-label">League Rules</div>
+
+        <!-- Scoring -->
+        <div class="panel">
+          <h3 class="panel-title">Scoring Categories</h3>
+          <div class="scoring-grid">
+            <div class="scoring-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="pointsToggle" class="custom-cb-real" checked />
+                <span class="custom-cb-box" aria-hidden="true">
+                  <svg class="custom-cb-svg" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Points
+              </label>
+              <div class="weight-group"><label>Weight</label><input type="number" id="pointsWeight" value="1" min="0.1" max="10" step="0.1" class="weight-input" /></div>
+            </div>
+            <div class="scoring-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="reboundsToggle" class="custom-cb-real" checked />
+                <span class="custom-cb-box" aria-hidden="true">
+                  <svg class="custom-cb-svg" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Rebounds
+              </label>
+              <div class="weight-group"><label>Weight</label><input type="number" id="reboundsWeight" value="1.2" min="0.1" max="10" step="0.1" class="weight-input" /></div>
+            </div>
+            <div class="scoring-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="assistsToggle" class="custom-cb-real" checked />
+                <span class="custom-cb-box" aria-hidden="true">
+                  <svg class="custom-cb-svg" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Assists
+              </label>
+              <div class="weight-group"><label>Weight</label><input type="number" id="assistsWeight" value="1.5" min="0.1" max="10" step="0.1" class="weight-input" /></div>
+            </div>
+            <div class="scoring-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="stealsToggle" class="custom-cb-real" checked />
+                <span class="custom-cb-box" aria-hidden="true">
+                  <svg class="custom-cb-svg" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Steals
+              </label>
+              <div class="weight-group"><label>Weight</label><input type="number" id="stealsWeight" value="2" min="0.1" max="10" step="0.1" class="weight-input" /></div>
+            </div>
+            <div class="scoring-row">
+              <label class="toggle-label">
+                <input type="checkbox" id="blocksToggle" class="custom-cb-real" checked />
+                <span class="custom-cb-box" aria-hidden="true">
+                  <svg class="custom-cb-svg" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Blocks
+              </label>
+              <div class="weight-group"><label>Weight</label><input type="number" id="blocksWeight" value="2" min="0.1" max="10" step="0.1" class="weight-input" /></div>
+            </div>
+          </div>
+          <button id="saveScoringBtn" class="btn-save">Save Scoring</button>
+        </div>
+
+        <!-- Timer -->
+        <div class="panel">
+          <h3 class="panel-title">Pick Timer</h3>
+          <div class="timer-setup-row">
+            <div class="form-group">
+              <label>Minutes</label>
+              <select id="timerMinutes" class="pool-select">
+                <option value="0">0</option>
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Seconds</label>
+              <select id="timerSeconds" class="pool-select">
+                <option value="0">00</option>
+                <option value="15">15</option>
+                <option value="30" selected>30</option>
+                <option value="45">45</option>
+              </select>
+            </div>
+          </div>
+          <button id="saveTimerBtn" class="btn-save">Save Timer</button>
+        </div>
+
+        <!-- ══ NOTIFICATIONS ══ -->
+        <div class="set-label">Notifications</div>
+        <div class="panel">
+          <div class="sc-settings-row">
+            <label class="toggle-label">
+              <input type="checkbox" id="notifToggle" class="custom-cb-real" />
+              <span class="custom-cb-box" aria-hidden="true">
+                <svg class="custom-cb-svg" viewBox="0 0 12 10" fill="none"><polyline points="1,5 4.5,8.5 11,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              "On the Clock" alerts
+            </label>
+            <span id="notifStatusPill" class="status-pill status-off">Off</span>
+          </div>
+          <p class="muted" style="margin-top:8px;font-size:13px;" id="notifStatusDesc">
+            Get a browser notification when it's your pick, even if the app is in the background.
+          </p>
+          <button class="btn-ghost btn-sm" id="notifEnableBtn" style="margin-top:10px;display:none;">Enable Notifications</button>
+
+          <!-- Everything below depends on the master toggle above -->
+          <div id="notifPrefsGroup" class="notif-prefs">
+            <div class="notif-prefs-head">Alert me about</div>
+
+            <label class="notif-pref">
+              <span class="np-main">
+                <span class="np-title">Draft starting soon</span>
+                <span class="np-sub">15 minutes before the scheduled start</span>
+              </span>
+              <input type="checkbox" class="np-switch" id="npDraftSoon" data-notif="draftSoon" checked />
+              <span class="np-track" aria-hidden="true"></span>
+            </label>
+
+            <label class="notif-pref">
+              <span class="np-main">
+                <span class="np-title">Pick made</span>
+                <span class="np-sub">Someone drafts a player</span>
+              </span>
+              <input type="checkbox" class="np-switch" id="npPickMade" data-notif="pickMade" />
+              <span class="np-track" aria-hidden="true"></span>
+            </label>
+
+            <label class="notif-pref">
+              <span class="np-main">
+                <span class="np-title">Your player scored</span>
+                <span class="np-sub">A player on your roster finishes a game</span>
+              </span>
+              <input type="checkbox" class="np-switch" id="npPlayerScored" data-notif="playerScored" checked />
+              <span class="np-track" aria-hidden="true"></span>
+            </label>
+
+            <label class="notif-pref">
+              <span class="np-main">
+                <span class="np-title">Team eliminated</span>
+                <span class="np-sub">One of your players is knocked out</span>
+              </span>
+              <input type="checkbox" class="np-switch" id="npEliminated" data-notif="eliminated" checked />
+              <span class="np-track" aria-hidden="true"></span>
+            </label>
+
+            <label class="notif-pref">
+              <span class="np-main">
+                <span class="np-title">Standings change</span>
+                <span class="np-sub">You move up or down a spot</span>
+              </span>
+              <input type="checkbox" class="np-switch" id="npRankChange" data-notif="rankChange" />
+              <span class="np-track" aria-hidden="true"></span>
+            </label>
+
+            <label class="notif-pref">
+              <span class="np-main">
+                <span class="np-title">Manager joined</span>
+                <span class="np-sub">Someone new enters your league</span>
+              </span>
+              <input type="checkbox" class="np-switch" id="npManagerJoined" data-notif="managerJoined" checked />
+              <span class="np-track" aria-hidden="true"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- ══ COMMISSIONER ══ -->
+        <div class="set-label commissioner-only">Commissioner</div>
+
+        <!-- Draft Setup (commissioner-only) -->
+        <div id="draftSetupPanel" class="panel commissioner-only">
+          <h3 class="panel-title">Draft Setup</h3>
+
+          <!-- League Name -->
+          <div class="form-group" style="margin-bottom:18px;">
+            <label>League Name</label>
+            <input type="text" id="setupLeagueName" placeholder="My League" />
+          </div>
+
+          <!-- Rounds stepper -->
+          <div class="ds-rounds-row">
+            <span class="ds-label">Rounds</span>
+            <div class="ds-stepper">
+              <button type="button" class="ds-step-btn" id="dsRoundsMinus">−</button>
+              <span id="dsRoundsVal">8</span>
+              <button type="button" class="ds-step-btn" id="dsRoundsPlus">+</button>
+            </div>
+          </div>
+          <input type="hidden" id="setupRounds" value="8" />
+
+          <!-- Manager draft order -->
+          <div class="ds-section-header">
+            <span class="ds-section-title">Draft Order</span>
+            <span class="ds-hint">Drag to reorder</span>
+          </div>
+          <ul id="draftOrderList" class="ds-order-list"></ul>
+
+          <!-- Managers arrive by joining with the league code. The
+               manual "add manager" field predated join-by-code and
+               created accountless phantoms: they held a roster slot,
+               sat in the draft order, and autopick drafted eight
+               players for someone who could never log in to see them. -->
+          <p class="ds-join-hint">Managers appear here when they join with your league code. Share it from League Management below.</p>
+
+          <button id="setupSaveBtn" class="btn-save">Save Draft Setup</button>
+        </div>
+
+        <!-- Schedule Draft -->
+        <div class="panel commissioner-only">
+          <h3 class="panel-title">Schedule Draft</h3>
+          <p class="panel-sub">Set a date and time. Everyone in your league sees a countdown, and the draft room unlocks automatically when it's time.</p>
+
+          <div class="sd-current" id="sdCurrent" style="display:none;">
+            <div class="sd-current-left">
+              <span class="sd-current-label">Draft scheduled for</span>
+              <span class="sd-current-time" id="sdCurrentTime">-</span>
+              <span class="sd-countdown" id="sdCountdown"></span>
+            </div>
+            <button type="button" class="sd-clear-btn" id="sdClearBtn">Clear</button>
+          </div>
+
+          <div class="sd-inputs">
+            <div class="form-group">
+              <label>Date</label>
+              <input type="date" id="sdDateInput" />
+            </div>
+            <div class="form-group">
+              <label>Time</label>
+              <input type="time" id="sdTimeInput" />
+            </div>
+          </div>
+
+          <button id="sdSaveBtn" class="btn-save">Schedule Draft</button>
+        </div>
+
+        <!-- League Management -->
+        <div class="panel commissioner-only">
+          <h3 class="panel-title">League Management</h3>
+          <div class="form-group">
+            <label>League Code</label>
+            <div class="code-display-row">
+              <span id="settingsLeagueCodeDisplay" class="league-code-badge">--</span>
+              <button id="copyCodeBtn" class="btn-ghost btn-sm">Copy Code</button>
+              <button id="shareInviteBtn" class="btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" style="vertical-align:-2px;margin-right:5px;"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Invite Link</button>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:16px;">
+            <label>Edit League Name</label>
+            <input type="text" id="settingsEditLeagueName" placeholder="League name" style="width:auto;" />
+            <button id="saveLeagueNameBtn" class="btn-save">Save Name</button>
+          </div>
+          <!-- Action rows, matching the Account and Danger Zone pattern:
+               title, description, then the control. The description used
+               to sit underneath the button it described, with inline
+               font sizes that matched nothing else on the page. -->
+          <div class="set-divide"></div>
+
+          <div class="set-row set-row--stack">
+            <div class="set-row-main">
+              <span class="set-row-title">Restart League</span>
+              <span class="set-row-sub">Clears all picks and resets the draft to round one. Managers, settings and the league code stay the same.</span>
+            </div>
+            <button id="restartLeagueBtn" class="set-row-btn">Restart</button>
+          </div>
+
+          <div class="set-row set-row--stack">
+            <div class="set-row-main">
+              <span class="set-row-title">Delete League</span>
+              <span class="set-row-sub">Permanently deletes this league for every manager in it. This cannot be undone.</span>
+            </div>
+            <button id="dissolveLeagueBtn" class="set-row-btn set-row-btn--danger">Delete</button>
+          </div>
+        </div>
+
+        <!-- ══ DANGER ZONE ══ -->
+        <div class="set-label set-label--danger">Danger Zone</div>
+        <div class="panel panel--danger">
+          <div class="set-row">
+            <div class="set-row-main">
+              <span class="set-row-title">Leave League</span>
+              <span class="set-row-sub">Removes you from this league. Your other leagues are untouched.</span>
+            </div>
+            <button class="set-row-btn set-row-btn--warn" id="leaveLeagueBtn">Leave</button>
+          </div>
+
+          <div class="set-row">
+            <div class="set-row-main">
+              <span class="set-row-title">Delete Account</span>
+              <span class="set-row-sub">Permanently erases your account and all league memberships. This cannot be undone.</span>
+            </div>
+            <button class="set-row-btn set-row-btn--danger" id="deleteAccountBtn">Delete</button>
+          </div>
+        </div>
+
+        <div class="set-footer">
+          <span>Tipoff Fantasy</span>
+          <span class="set-footer-dot">·</span>
+          <span id="appVersionLabel">v1.0</span>
+        </div>
+      </section>
+
+      <!-- ── Account action modal (email / password / delete) ── -->
+      <div id="acctModal" class="acct-modal" style="display:none;">
+        <div class="acct-modal-card">
+          <h3 class="acct-modal-title" id="acctModalTitle">Confirm</h3>
+          <p class="acct-modal-sub" id="acctModalSub"></p>
+
+          <div class="form-group" id="acctFieldNewWrap" style="display:none;">
+            <label id="acctFieldNewLabel">New value</label>
+            <input type="text" id="acctFieldNew" autocomplete="off" />
+          </div>
+
+          <div class="form-group">
+            <label>Current password</label>
+            <input type="password" id="acctFieldPw" autocomplete="current-password" placeholder="Required to confirm" />
+          </div>
+
+          <p class="acct-modal-err" id="acctModalErr" style="display:none;"></p>
+
+          <div class="acct-modal-actions">
+            <button class="btn-ghost" id="acctModalCancel">Cancel</button>
+            <button class="btn-primary" id="acctModalConfirm">Confirm</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel" id="rightPanel">
+      <!-- UP NEXT -->
+      <div class="rp-section">
+        <div class="rp-section-title">Up Next</div>
+        <div id="rpUpNext"><!-- rendered by JS --></div>
+        <button class="rp-view-all-btn" onclick="navigateTo('players')">View Draft Order</button>
+      </div>
+      <!-- STANDINGS -->
+      <div class="rp-section">
+        <div class="rp-section-header">
+          <span class="rp-section-title">Standings</span>
+          <button class="rp-link-btn" onclick="navigateTo('standings')">View All</button>
+        </div>
+        <div id="rpStandings"><!-- rendered by JS --></div>
+        <button class="rp-view-all-btn" onclick="navigateTo('standings')">Full Standings</button>
+      </div>
+      <!-- LEAGUE CHAT -->
+      <div class="rp-section rp-section-chat">
+        <div class="rp-section-title">League Chat</div>
+        <div id="rpChatMessages" class="rp-chat-msgs"><!-- rendered by JS --></div>
+        <div class="rp-chat-input-row">
+          <input type="text" id="rpChatInput" placeholder="Type a message…" class="rp-chat-input" maxlength="280" />
+          <button id="rpChatSendBtn" class="rp-chat-send" aria-label="Send">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /mainApp -->
+
+  <!-- Confetti -->
+  <div id="confettiContainer" style="position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;"></div>
+
+  <!-- ═══════════════════════════════════════════
+     OVERLAYS
+════════════════════════════════════════════ -->
+
+  <!-- Enter League Animation -->
+  <div id="leoOverlay" class="leo" style="display:none;">
+    <div class="leo-ring leo-ring--1"></div>
+    <div class="leo-ring leo-ring--2"></div>
+    <div class="leo-ring leo-ring--3"></div>
+    <div class="leo-corner leo-corner--tl"></div>
+    <div class="leo-corner leo-corner--tr"></div>
+    <div class="leo-corner leo-corner--bl"></div>
+    <div class="leo-corner leo-corner--br"></div>
+    <div class="leo-name" id="leoName"></div>
+  </div>
+
+  <!-- Pick Announcement -->
+  <div id="pickAnnounce" class="pick-announce" style="display:none;">
+    <div class="pa-card" id="paCard">
+      <div class="pa-logo" id="paLogo"></div>
+      <div class="pa-player" id="paPlayer"></div>
+      <div class="pa-college" id="paCollege"></div>
+      <div class="pa-pos" id="paPos"></div>
+      <div class="pa-by" id="paBy"></div>
+    </div>
+  </div>
+
+  <!-- Draft Confirm Modal -->
+  <div id="draftConfirmModal" class="modal-backdrop" style="display:none;">
+    <div class="modal-card">
+      <div class="confirm-logo" id="confirmLogo"></div>
+      <h3 id="confirmPlayerName">Player Name</h3>
+      <p id="confirmPlayerDetail" class="modal-sub"></p>
+      <div class="confirm-stats" id="confirmStats"></div>
+      <div class="modal-actions">
+        <button id="confirmCancelBtn" class="btn-ghost">Cancel</button>
+        <button id="confirmPickBtn" class="btn-primary draft-go">Confirm Pick ›</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Player Detail Card -->
+  <div id="pdcOverlay" class="pdc-overlay" style="display:none;">
+    <div class="pdc-card" id="pdcCard">
+      <button class="pdc-close" id="pdcClose">✕</button>
+      <div class="pdc-header">
+        <div class="pdc-logo" id="pdcLogo"></div>
+        <div class="pdc-info">
+          <h3 id="pdcName"></h3>
+          <div class="pdc-meta">
+            <span class="pos-badge" id="pdcPos"></span>
+            <span class="seed-badge" id="pdcSeed"></span>
+            <span class="region-badge" id="pdcRegion"></span>
+          </div>
+          <div class="pdc-college" id="pdcCollege"></div>
+        </div>
+      </div>
+      <div class="pdc-stats" id="pdcStats"></div>
+      <div class="pdc-draft-status" id="pdcDraftStatus"></div>
+    </div>
+  </div>
+
+  <!-- Restart League Confirm Modal -->
+  <div id="restartModal" class="modal-backdrop" style="display:none;">
+    <div class="modal-card">
+      <h3>Restart League</h3>
+      <p class="modal-sub">All picks will be cleared and the draft resets to Round 1, Pick 1. Your managers, league code, and settings stay the same.</p>
+      <div class="modal-actions">
+        <button id="restartCancelBtn" class="btn-ghost">Cancel</button>
+        <button id="restartConfirmBtn" class="btn-primary">Yes, Restart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dissolve Confirm Modal -->
+  <div id="dissolveModal" class="modal-backdrop" style="display:none; align-items: flex-start; padding-top: max(48px, env(safe-area-inset-top, 48px));">
+    <div class="modal-card modal-sm">
+      <h3 style="color:var(--red);">Delete League</h3>
+      <p class="modal-sub">This will permanently delete the league and all draft data. This cannot be undone.</p>
+      <div class="modal-actions">
+        <button id="dissolveCancelBtn" class="btn-ghost">Cancel</button>
+        <button id="dissolveConfirmBtn" class="btn-red">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Stats Modal -->
+  <div id="gameModal" class="modal-backdrop" style="display:none;">
+    <div class="game-modal-card">
+      <button class="gm-close" id="gmClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <!-- Scoreboard -->
+      <!-- The two team columns are the roster selector: tapping one
+           shows that team's box score below. Both rosters stacked at
+           once made the modal a long scroll with no way to compare. -->
+      <div class="gm-scoreboard" role="tablist" aria-label="Select team">
+        <button type="button" class="gm-team-col gm-team-top is-active"
+                id="gmTopTab" data-gm-tab="top" role="tab" aria-selected="true"
+                aria-controls="gmTopStats">
+          <div class="gm-logo" id="gmTopLogo"></div>
+          <div class="gm-team-name" id="gmTopName">TBD</div>
+          <div class="gm-score" id="gmTopScore">-</div>
+        </button>
+        <div class="gm-mid-col">
+          <div class="gm-status-badge" id="gmStatus">PRE-GAME</div>
+          <div class="gm-period" id="gmPeriod"></div>
+          <div class="gm-round-label" id="gmRoundLabel"></div>
+        </div>
+        <button type="button" class="gm-team-col gm-team-bot"
+                id="gmBotTab" data-gm-tab="bot" role="tab" aria-selected="false"
+                aria-controls="gmBotStats">
+          <div class="gm-logo" id="gmBotLogo"></div>
+          <div class="gm-team-name" id="gmBotName">TBD</div>
+          <div class="gm-score" id="gmBotScore">-</div>
+        </button>
+      </div>
+
+      <!-- Stats Tables -->
+      <div class="gm-stats-wrap">
+        <!-- Top team stats -->
+        <div class="gm-team-stats-block is-active" id="gmTopStats" role="tabpanel" aria-labelledby="gmTopTab">
+          <div class="gm-stats-team-label" id="gmTopStatsLabel"></div>
+          <div class="gm-stats-table">
+            <div class="gm-stats-header">
+              <span class="gst-player">Player</span>
+              <span class="gst-stat">PTS</span>
+              <span class="gst-stat">REB</span>
+              <span class="gst-stat">AST</span>
+              <span class="gst-stat">STL</span>
+              <span class="gst-stat">BLK</span>
+              <span class="gst-stat gst-fpts">FPTS</span>
+            </div>
+            <div id="gmTopRows" class="gm-stats-rows"></div>
+          </div>
+        </div>
+
+        <!-- Bot team stats -->
+        <div class="gm-team-stats-block" id="gmBotStats" role="tabpanel" aria-labelledby="gmBotTab">
+          <div class="gm-stats-team-label" id="gmBotStatsLabel"></div>
+          <div class="gm-stats-table">
+            <div class="gm-stats-header">
+              <span class="gst-player">Player</span>
+              <span class="gst-stat">PTS</span>
+              <span class="gst-stat">REB</span>
+              <span class="gst-stat">AST</span>
+              <span class="gst-stat">STL</span>
+              <span class="gst-stat">BLK</span>
+              <span class="gst-stat gst-fpts">FPTS</span>
+            </div>
+            <div id="gmBotRows" class="gm-stats-rows"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="gm-live-note">Live stats will update automatically once the data feed is connected.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+     FORGOT PASSWORD
+     Firebase sends the reset mail and hosts the reset page, so this
+     only has to collect an address and report back honestly.
+  ════════════════════════════════════════════ -->
+  <div id="resetModal" class="modal-backdrop" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+    <div class="reset-card">
+      <button class="reset-close" id="resetClose" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+
+      <h3 class="reset-title" id="resetTitle">Reset your password</h3>
+      <p class="reset-sub">Enter the email on your account. We'll send you a link to set a new password.</p>
+
+      <div class="form-group">
+        <label for="resetEmail">Email</label>
+        <input type="email" id="resetEmail" placeholder="you@example.com" autocomplete="email" />
+      </div>
+
+      <div id="resetError" class="auth-error" style="display:none;"></div>
+      <div id="resetSent" class="reset-sent" style="display:none;"></div>
+
+      <button id="resetSendBtn" class="btn-primary btn-full">Send reset link</button>
+      <button id="resetBackBtn" class="reset-back" type="button">Back to sign in</button>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="toast-container"></div>
+
+  <!-- Tournament Selector Modal -->
+  <div id="tournamentSelectModal" class="modal-backdrop tsm-overlay" style="display:none;">
+    <div class="modal-card tsm-card">
+      <div class="tsm-header">
+        <div>
+          <h3 class="tsm-title">Choose Tournament</h3>
+          <p class="tsm-sub">Select the event your league will draft and play for.</p>
+        </div>
+        <button class="tsm-close" id="tsmClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="tsm-body" id="tsmBody"></div>
+    </div>
+  </div>
+
+  <!-- Bracket Preview Modal -->
+  <div id="bracketPreviewModal" class="modal-backdrop bpm-overlay" style="display:none;">
+    <div class="modal-card bpm-card">
+      <div class="bpm-header">
+        <div>
+          <h3 class="bpm-title" id="bpmTitle">Bracket</h3>
+          <p class="bpm-sub" id="bpmSub"></p>
+        </div>
+        <button class="bpm-close" id="bpmClose" aria-label="Close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="bpm-body" id="bpmBody"></div>
+    </div>
+  </div>
+
+  <!-- Tutorial Overlay -->
+  <div id="tutorialOverlay" class="tut-overlay" style="display:none;">
+    <div class="tut-card">
+      <div class="tut-header">
+        <div class="tut-bar-track"><div class="tut-bar-fill" id="tutBarFill" style="width:12%"></div></div>
+        <span class="tut-step-label"><span id="tutStepNum">1</span> / <span id="tutStepTotal">8</span></span>
+      </div>
+      <div class="tut-body" id="tutBody"></div>
+      <div class="tut-footer">
+        <button class="tut-back-btn" id="tutBackBtn">Back</button>
+        <button class="tut-next-btn" id="tutNextBtn">Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase (compat CDN) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <script src="data/bracket.js"></script>
+  <script src="data/players.js"></script>
+  <!-- Loaded before app.js so window.Analytics exists at first call.
+       No-ops until a PostHog key is set in analytics.js. -->
+  <script src="src/analytics.js"></script>
+  <script src="src/app.js"></script>
+  <script src="data/conference-players.js"></script>
+  <script src="src/season/season.js"></script>
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('[SW] Registered:', reg.scope))
+          .catch(err => console.warn('[SW] Registration failed:', err));
+      });
+    }
+  </script>
+</body>
+
+</html>
